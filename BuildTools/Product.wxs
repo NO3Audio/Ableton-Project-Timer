@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="4334735f-88ff-4562-a25d-abb2c330d9a7" Name="Ableton Project Timer" Language="1033" Version="1.0.0.0" Manufacturer="NO3audio.co.uk" UpgradeCode="80060087-dbc4-455a-867d-60127df41dff">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes"/>
+		<Icon Id="icon.ico" SourceFile="$(var.ProjectDir)\..\assets\icon.ico"/>
+		<Property Id="ARPPRODUCTICON">icon.ico</Property>
+
+		<Feature Id="ProductFeature" Title="Ableton Project Timer" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentRef Id="x86Folder" />
+			<ComponentGroupRef Id="DataComponents" />
+			<ComponentRef Id="DesktopShortcut"/>
+			<ComponentRef Id="ProgramMenuShortcut"/>
+		</Feature>
+
+		<UI>
+			<UIRef Id="WixUI_InstallDir" />
+
+			<Publish Dialog="WelcomeDlg"
+                     Control="Next"
+                     Event="NewDialog"
+                     Value="InstallDirDlg"
+                     Order="2">1</Publish>
+			<Publish Dialog="InstallDirDlg"
+                     Control="Back"
+                     Event="NewDialog"
+                     Value="WelcomeDlg"
+                     Order="2">1</Publish>
+		</UI>
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+		
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)Assets\Background.bmp"/>
+		
+        <DirectoryRef Id="INSTALLFOLDER">
+        </DirectoryRef>
+		
+		<DirectoryRef Id="DesktopFolder">
+			<Component Id="DesktopShortcut" Guid="7348ef54-94c8-4d49-aa75-02e91010129f">
+				<Shortcut Id="DesktopShortcut" Name="Ableton Project Timer" Description="Your Description" Target="[INSTALLFOLDER]Ableton Project Timer.exe" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+				<RemoveFolder Id="DesktopFolder" On="uninstall" />
+				<RegistryValue Root="HKCU" Key="Software\YourManufacturer\YourProduct" Name="DesktopSC" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+		
+		<DirectoryRef Id="ProgramMenuFolder">
+			<Component Id="ProgramMenuShortcut" Guid="c5514240-3454-4db2-a14d-52dcdafa6bc6">
+				<Shortcut Id="ProgramMenuShortcut" Name="Ableton Project Timer" Description="Your Description" Target="[INSTALLFOLDER]Ableton Project Timer.exe" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+				<RemoveFolder Id="ProgramMenuFolder" On="uninstall" />
+				<RegistryValue Root="HKCU" Key="Software\YourManufacturer\YourProduct" Name="ProgramMenuSC" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="DesktopFolder" Name="DesktopFolder"/>
+			<Directory Id="ProgramMenuFolder" Name="ProgramMenuFolder"/>
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Ableton Project Timer">
+					<Directory Id="x86Folder" Name="x86">
+					</Directory>
+				</Directory>
+			</Directory>
+			<Directory Id="LocalAppDataFolder" Name="DatabaseLocation">
+				<Directory Id="DATAFOLDER" Name="Ableton Project Timer" />
+			</Directory>
+		</Directory>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			 <Component Id="ProductComponent" Guid="265d0cdc-9839-41a5-98d2-01422c623ee7"> 
+				 <File Source="$(var.ProjectDir)\..\bin\Release\Ableton Project Timer.exe" KeyPath="yes" Id="AbletonProjectTimer.exe"/>
+				 <File Source="$(var.ProjectDir)\..\bin\Release\Ableton Project Timer.exe.config" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\Ableton Project Timer.pdb" />
+				 
+				 <File Source="$(var.ProjectDir)\..\assets\icon.ico" />
+				 
+				 <File Source="$(var.ProjectDir)\..\bin\Release\EntityFramework.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\EntityFramework.SqlServer.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\EntityFramework.SqlServer.xml" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\EntityFramework.xml" />
+				 
+				 <File Source="$(var.ProjectDir)\..\bin\Release\Microsoft.Data.Sqlite.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\Microsoft.Data.Sqlite.xml" />
+				 
+				 <File Source="$(var.ProjectDir)\..\bin\Release\SQLitePCLRaw.batteries_v2.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\SQLitePCLRaw.core.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\SQLitePCLRaw.provider.dynamic_cdecl.dll" />
+				 
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Buffers.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Buffers.xml" />
+				 
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Data.SQLite.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Data.SQLite.EF6.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Data.SQLite.Linq.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Data.SQLite.xml" />
+				 
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Memory.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Memory.xml" />
+				 
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Numerics.Vectors.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Numerics.Vectors.xml" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Runtime.CompilerServices.Unsafe.dll" />
+				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Runtime.CompilerServices.Unsafe.xml" />
+			
+			 </Component>
+			
+			<Component Id="AutostartComponent" Guid="9af37bbe-1251-4182-a876-127cb030e537">
+				<RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run">
+					<RegistryValue Type="string" Name="AbletonProjectTimer" Value="[INSTALLFOLDER]Ableton Project Timer.exe" />
+				</RegistryKey>
+			</Component>
+		</ComponentGroup>
+		
+		<ComponentGroup Id="x86Components" Directory="x86Folder">
+			<Component Id="x86Folder" >
+				<File Source="$(var.ProjectDir)\..\bin\Release\x86\SQLite.Interop.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="DataComponents" Directory="DATAFOLDER" >
+			<Component Id="DataComponents" Guid="b70a8e6b-8201-4c48-9c18-bda206e44711">
+				<RegistryValue Root='HKCU' Key='Software\NO3Audio\Ableton Project Timer'
+                     Name='DataFolder'
+                     Value='[Database]'
+                     Type='string'
+					KeyPath='yes'/>
+				<File Source="$(var.ProjectDir)Data.db"/>
+				<RemoveFolder Id="RemoveDatabaseFile" On="uninstall" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
