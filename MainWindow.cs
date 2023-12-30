@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Ableton_Project_Timer
@@ -8,25 +9,29 @@ namespace Ableton_Project_Timer
     public partial class MainWindow : Form
     {
 #if (DEBUG)
-        Icon iconFile = new Icon("../../assets/icon.ico");
+        string iconLocation = "../../assets/icon.ico";
 #else
-        Icon iconFile = new Icon(".\\icon.ico");
+        string iconLocation = "./icon.ico";
 #endif
         public MainWindow()
         {
-            
             InitializeComponent();
+            InitializeParams();
+            CreateTray();
+        }
 
+        private void InitializeParams()
+        {
             this.Resize += this.MainWindow_Resize;
             this.timesGridView.SelectionChanged += this.timesGridView_Selected;
 
             this.timer = new Timer(this);
 
-            this.Icon = iconFile;
+            this.Icon = new Icon(iconLocation); ;
+
             this.Text = "Ableton Project Timer";
-            
-            CreateTray();
         }
+            
 
         private void CreateTray()
         {

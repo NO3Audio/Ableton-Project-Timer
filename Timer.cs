@@ -39,7 +39,6 @@ namespace Ableton_Project_Timer
                 if (IsAbletonActive())
                 {
                     if (!IsTimerActive()) { StartTimer(); }
-                    Console.WriteLine(GetAbletonProjectName());
                 }
                 else
                 {
@@ -87,7 +86,6 @@ namespace Ableton_Project_Timer
                     {
                         TimeSpan time = TimeSpan.Parse(currentTime);
                         time = time.Add(TimeSpan.FromSeconds(1));
-                        Console.WriteLine(time);
                         this.db.WriteProjectTime(abletonTitle, time.ToString());
                     }
                     else
@@ -148,8 +146,6 @@ namespace Ableton_Project_Timer
         private void LoadDataToUI()
         {
             mainWindow.PopulateTableData(db.GetDataAsTable());
-            Console.WriteLine(db.GetDataAsTable());
-            Console.WriteLine("SHOULD BE LOADING TO UI");
         }
         
 

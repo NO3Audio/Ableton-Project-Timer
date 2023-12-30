@@ -14,8 +14,10 @@
 			<ComponentGroupRef Id="DataComponents" />
 			<ComponentRef Id="DesktopShortcut"/>
 			<ComponentRef Id="ProgramMenuShortcut"/>
-		</Feature>
-
+			<ComponentRef Id="StartupMenuShortcut"/>
+			<!--<ComponentRef Id="AutostartComponent" />-->
+		</Feature >
+		
 		<UI>
 			<UIRef Id="WixUI_InstallDir" />
 
@@ -33,6 +35,12 @@
 		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 		
 		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)Assets\Background.bmp"/>
+		
+		<CustomAction Id="LaunchApp" Directory="INSTALLFOLDER" ExeCommand="[INSTALLFOLDER]Ableton Project Timer.exe" Execute="deferred" Return="asyncNoWait" Impersonate="yes" />
+
+		<InstallExecuteSequence>
+			<Custom Action="LaunchApp" After="InstallFiles">NOT Installed</Custom>
+		</InstallExecuteSequence>
 		
         <DirectoryRef Id="INSTALLFOLDER">
         </DirectoryRef>
@@ -52,12 +60,21 @@
 				<RegistryValue Root="HKCU" Key="Software\YourManufacturer\YourProduct" Name="ProgramMenuSC" Type="integer" Value="1" KeyPath="yes" />
 			</Component>
 		</DirectoryRef>
+	
+		<DirectoryRef Id="StartupFolder">
+			<Component Id="StartupMenuShortcut" Guid="70a5cddb-64b2-43fa-b65e-9d5ddd27ac10">
+				<Shortcut Id="StartupMenuShortcut" Name="Ableton Project Timer" Description="Your Description" Target="[INSTALLFOLDER]Ableton Project Timer.exe" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+				<RemoveFolder Id="StartupFolder" On="uninstall" />
+				<RegistryValue Root="HKCU" Key="Software\YourManufacturer\YourProduct" Name="StartupSC" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="DesktopFolder" Name="DesktopFolder"/>
 			<Directory Id="ProgramMenuFolder" Name="ProgramMenuFolder"/>
+			<Directory Id="StartupFolder" Name="StartupFolder"/>
 			<Directory Id="ProgramFilesFolder">
 				<Directory Id="INSTALLFOLDER" Name="Ableton Project Timer">
 					<Directory Id="x86Folder" Name="x86">
@@ -105,15 +122,16 @@
 				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Numerics.Vectors.xml" />
 				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Runtime.CompilerServices.Unsafe.dll" />
 				 <File Source="$(var.ProjectDir)\..\bin\Release\System.Runtime.CompilerServices.Unsafe.xml" />
-			
 			 </Component>
-			
-			<Component Id="AutostartComponent" Guid="9af37bbe-1251-4182-a876-127cb030e537">
-				<RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run">
+		</ComponentGroup>
+
+		<!--<ComponentGroup Id="AutostartComponents">
+			<Component Id="AutostartComponent" Guid="9af37bbe-1251-4182-a876-127cb030e537" Directory="INSTALLFOLDER">
+				<RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run" Action="create">
 					<RegistryValue Type="string" Name="AbletonProjectTimer" Value="[INSTALLFOLDER]Ableton Project Timer.exe" />
 				</RegistryKey>
 			</Component>
-		</ComponentGroup>
+		</ComponentGroup>-->
 		
 		<ComponentGroup Id="x86Components" Directory="x86Folder">
 			<Component Id="x86Folder" >

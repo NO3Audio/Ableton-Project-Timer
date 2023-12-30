@@ -65,7 +65,6 @@ namespace Ableton_Project_Timer
         public DataTable GetDataAsTable()
         {
             SQLiteCommand command = new SQLiteCommand("SELECT * FROM projects", sqliteConnection);
-            Console.WriteLine("GET ALL PROJECT DATA");
             try
             {
                 DataTable dataTable = new DataTable();
@@ -125,7 +124,6 @@ namespace Ableton_Project_Timer
                 {
                     if ((bool)exists)
                     {
-                        Console.WriteLine("route1");
                         SQLiteCommand dbWrite = new SQLiteCommand("UPDATE projects SET TotalTime = @ttime WHERE ProjectName = @pname;", this.sqliteConnection);
                         dbWrite.Parameters.AddWithValue("@ttime", time);
                         dbWrite.Parameters.AddWithValue("@pname", projectName);
@@ -133,7 +131,6 @@ namespace Ableton_Project_Timer
                     }
                     else
                     {
-                        Console.WriteLine("route2");
                         SQLiteCommand dbWrite = new SQLiteCommand("INSERT INTO projects (ProjectName, TotalTime) VALUES (@pname, '00:00:01');", this.sqliteConnection);
                         dbWrite.Parameters.AddWithValue("@pname", projectName);
                         dbWrite.ExecuteNonQuery();
@@ -141,7 +138,6 @@ namespace Ableton_Project_Timer
                 }
             } catch (Exception ex)
             {
-                Console.WriteLine("WriteProjectTime()");
                 Console.WriteLine(ex.Message);
             }
         }
@@ -166,7 +162,6 @@ namespace Ableton_Project_Timer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in GetProjectTime");
                 Console.WriteLine (ex.Message);
                 return null;
             }
